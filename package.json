@@ -1,0 +1,21 @@
+{
+  "name": "blood_bank",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm start --prefix ./server",
+    "client": "npm start --prefix ./client",
+    "client-install": "npm i --prefix ./client",
+    "server-install": "npm i --prefix ./server",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "installAll": "concurrently \"npm install\" \"npm run server-install\" \"npm run client-install\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
