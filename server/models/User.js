@@ -1,6 +1,6 @@
 // server/models/User.js
 
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Donor name or Hospital Contact Person Name
@@ -11,18 +11,18 @@ const userSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    enum: ["donor", "hospital", "admin"],
+    enum: ['donor', 'hospital', 'admin'],
     required: true,
   },
 
   // Donor-specific
-  dateOfBirth: { type: Date }, // Added DOB for donors instead of age
+  dateOfBirth: { type: Date },
   gender: { type: String },
   bloodGroup: { type: String },
 
   // Hospital-specific
-  hospitalName: { type: String }, // official hospital name
-  licenseNumber: { type: String }, // hospital license
+  hospitalName: { type: String },
+  licenseNumber: { type: String },
 
   isApproved: { type: Boolean, default: false },
 
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Virtual field to calculate age from date of birth
-userSchema.virtual("age").get(function () {
+userSchema.virtual('age').get(function () {
   if (!this.dateOfBirth) return null;
   const today = new Date();
   const birthDate = new Date(this.dateOfBirth);
@@ -46,7 +46,9 @@ userSchema.virtual("age").get(function () {
 });
 
 // Ensure virtual fields are serialized
-userSchema.set("toJSON", { virtuals: true });
-userSchema.set("toObject", { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
+userSchema.set('toObject', { virtuals: true });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
+
+export default User;

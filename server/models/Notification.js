@@ -1,32 +1,45 @@
 // server/models/Notification.js
 
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const notificationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
-  message: { type: String, required: true },
+  message: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
-    enum: ["reminder", "urgent", "info", "approval"],
-    default: "info",
+    enum: ['reminder', 'urgent', 'info', 'approval'],
+    default: 'info',
   },
-  isRead: { type: Boolean, default: false },
-
-  // Admin notes field to track which admin created the notification
+  isRead: {
+    type: Boolean,
+    default: false,
+  },
   adminNotes: {
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference to admin user
+      ref: 'User',
     },
-    notes: { type: String }, // Additional notes from admin
-    createdAt: { type: Date, default: Date.now },
+    notes: {
+      type: String,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-
-  createdAt: { type: Date, default: Date.now },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model("Notification", notificationSchema);
+const Notification = mongoose.model('Notification', notificationSchema);
+
+export default Notification;

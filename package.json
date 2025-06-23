@@ -9,7 +9,7 @@
     "client-install": "npm i --prefix ./client",
     "server-install": "npm i --prefix ./server",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "installAll": "concurrently \"npm install\" \"npm run server-install\" \"npm run client-install\""
+    "installAll": "concurrently \"npm run server-install\" \"npm run client-install\""
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,9 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }
