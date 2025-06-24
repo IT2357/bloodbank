@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../services/API";
 import toast from "react-hot-toast";
 
-// Login
 export const userLogin = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
@@ -11,15 +10,16 @@ export const userLogin = createAsyncThunk(
 
       if (data.token) {
         localStorage.setItem("token", data.token);
-        toast.success(data.message);
+        toast.success(data.message); // Optional: Remove toast if not needed
       }
 
       return data;
     } catch (error) {
-      const message =
-        error?.response?.data?.message || "Login failed. Please try again.";
-      toast.error(message);
-      return rejectWithValue(message);
+      return rejectWithValue({
+        status: error?.response?.status,
+        message:
+          error?.response?.data?.message || "Login failed. Please try again.",
+      });
     }
   }
 );

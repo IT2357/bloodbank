@@ -207,9 +207,10 @@ export const loginUser = async (req, res) => {
     }
 
     if (user.role === "hospital" && !user.isApproved) {
-      return res
-        .status(403)
-        .json({ message: "Hospital registration not approved yet" });
+      return res.status(403).json({
+        message:
+          "Your hospital registration is not approved yet, \n\nThank you for your patience",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

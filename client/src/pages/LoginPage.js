@@ -1,33 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-// import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/shared/FormInput";
-import { handleLogin } from "../services/authService";
+import { userLogin } from "../redux/features/auth/authActions";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { user, loading } = useSelector((state) => state.auth);
 
-  const Login = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password)
-      return alert("Please provide both email and password.");
-    handleLogin(e, email, password);
-  };
+    if (!email || !password) {
+      alert("Please provide both email and password.");
+      return;
+    }
 
-  useEffect(() => {
-    if (user?.role === "hospital" && !user?.isApproved) {
+    const res = await dispatch(userLogin({ email, password }));
+
+    if (res?.meta?.requestStatus === "rejected") {
+      const msg = res?.payload?.message || "Login failed.";
+      alert(msg);
+      return;
+    }
+
+    // Optional: extra client-side check if backend ever returns 200 with unapproved hospital
+    if (
+      res?.payload?.user?.role === "hospital" &&
+      res?.payload?.user?.isApproved === false
+    ) {
       alert("Your hospital registration is still under review.");
       return;
     }
 
-    if (user) navigate("/home");
-  }, [user, navigate]);
+    if (res?.payload?.success || res?.payload?.token) {
+      alert(res?.payload?.message || "Login successful");
+      navigate("/home");
+    }
+  };
 
   return (
     <div
@@ -51,7 +64,8 @@ const LoginPage = () => {
       >
         Login to BloodCare
       </h2>
-      <form onSubmit={Login}>
+
+      <form onSubmit={handleLogin}>
         <FormInput
           label="Email"
           name="email"
