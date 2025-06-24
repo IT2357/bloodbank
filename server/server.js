@@ -1,11 +1,12 @@
 // server/server.js
 
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import authRoutes from './routes/authRoutes.js';
-import hospitalRoutes from './routes/hospitalRoutes.js';
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./routes/authRoutes.js";
+import hospitalRoutes from "./routes/hospitalRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/hospital", hospitalRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
